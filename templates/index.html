@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decision Helper</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <h1>Welcome to Decision Helper</h1>
+    <div id="chat-container">
+        <div id="chat-output">
+            {% for message in chat_history %}
+                <p><strong>You:</strong> {{ message.user_message }}</p>
+                <p><strong>ChatBot:</strong> {{ message.chatbot_response }}</p>
+            {% endfor %}
+        </div>
+        <div id="user-input">
+            <input type="text" id="user-message" placeholder="Enter your dilemma">
+            <button onclick="sendMessage()">Send</button>
+            <button onclick="clearHistory()">Clear History</button>
+        </div>
+        <div id="chosen-option" class="hidden"></div>
+    </div>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>

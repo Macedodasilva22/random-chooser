@@ -1,0 +1,93 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f0f0f0; /* Example background color */
+}
+
+#chat-container {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #fff; /* White background for chat container */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Example box shadow */
+}
+
+#chat-output {
+    margin-bottom: 10px;
+}
+
+#user-input {
+    display: flex;
+    align-items: center;
+}
+
+#user-message {
+    flex: 1;
+    margin-right: 10px;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    padding: 8px 16px;
+    font-size: 16px;
+    background-color: #007bff; /* Example button color */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3; /* Example button hover color */
+}
+
+.hidden {
+    display: none;
+}
+
+#chosen-option {
+    margin-top: 20px;
+    font-size: 1.2em;
+    color: #333;
+    opacity: 0; /* Start with opacity 0 for the fade-in effect */
+    animation: fadeIn 0.5s forwards; /* Apply fadeIn animation */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Responsive Design */
+@media only screen and (max-width: 600px) {
+    body {
+        font-size: 14px;
+    }
+
+    #chat-container {
+        padding: 10px;
+    }
+
+    #user-input {
+        flex-direction: column;
+    }
+
+    #user-message {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    button {
+        width: 100%;
+        margin: 5px 0;
+    }
+}
