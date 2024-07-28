@@ -1,6 +1,6 @@
 import random
 
-class Pedro:  # Rename ChatBot to Pedro
+class Pedro:  
     def __init__(self):
         self.state = 0
         self.dilemma = ""
@@ -29,12 +29,12 @@ class Pedro:  # Rename ChatBot to Pedro
             return "Thank you! Let me choose one for you..."
         elif self.state == 3:
             chosen_option = random.choice(self.options)
-            self.state = 0  # Reset state for next interaction
+            self.state = 0  
             return f"My choice for '{self.dilemma}' is: {chosen_option.strip()}"
 
-# For testing purposes
+
 if __name__ == "__main__":
-    pedro = Pedro()  # Instantiate Pedro
+    pedro = Pedro()  
     user_input = "I don't know what to wear"
     response = pedro.process_input(user_input)
     print(response)

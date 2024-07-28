@@ -13,13 +13,13 @@ def index():
 @app.route('/chat', methods=['POST'])
 def chat():
     user_message = request.json.get('message')
-    response = pedro.process_input(user_message)  # Use pedro instead of chatbot
+    response = pedro.process_input(user_message)  
     chat_history.append({"user_message": user_message, "chatbot_response": response})
     return jsonify(response=response, chat_history=chat_history)
 
 @app.route('/clear-history', methods=['POST'])
 def clear_history():
-    chat_history.clear()  # Clear chat history
+    chat_history.clear() 
     return jsonify(success=True)
 
 if __name__ == '__main__':

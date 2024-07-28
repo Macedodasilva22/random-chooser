@@ -1,16 +1,16 @@
 body {
     font-family: Arial, sans-serif;
     margin: 20px;
-    background-color: #f0f0f0; /* Example background color */
+    background-color: #f0f0f0; 
 }
 
 #chat-container {
     max-width: 600px;
     margin: 0 auto;
-    background-color: #fff; /* White background for chat container */
+    background-color: #fff; 
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Example box shadow */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
 }
 
 #chat-output {
@@ -34,7 +34,7 @@ body {
 button {
     padding: 8px 16px;
     font-size: 16px;
-    background-color: #007bff; /* Example button color */
+    background-color: #007bff;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -43,7 +43,7 @@ button {
 }
 
 button:hover {
-    background-color: #0056b3; /* Example button hover color */
+    background-color: #0056b3; 
 }
 
 .hidden {
@@ -54,8 +54,8 @@ button:hover {
     margin-top: 20px;
     font-size: 1.2em;
     color: #333;
-    opacity: 0; /* Start with opacity 0 for the fade-in effect */
-    animation: fadeIn 0.5s forwards; /* Apply fadeIn animation */
+    opacity: 0;
+    animation: fadeIn 0.5s forwards;
 }
 
 @keyframes fadeIn {
@@ -67,7 +67,7 @@ button:hover {
     }
 }
 
-/* Responsive Design */
+
 @media only screen and (max-width: 600px) {
     body {
         font-size: 14px;

@@ -1,4 +1,3 @@
-// scripts.js
 
 function sendMessage() {
     const userMessage = document.getElementById('user-message').value;
@@ -20,12 +19,12 @@ function sendMessage() {
         chatOutput.appendChild(chatbotMessageP);
         document.getElementById('user-message').value = '';
 
-        // Optionally, handle displaying chosen option if needed
+       
         if (data.chosen_option) {
             const chosenOptionDiv = document.getElementById('chosen-option');
             chosenOptionDiv.classList.remove('hidden');
             chosenOptionDiv.innerHTML = `ChatBot chose: <strong>${data.chosen_option}</strong>`;
-            chosenOptionDiv.classList.add('win-animation'); // Add class for animation
+            chosenOptionDiv.classList.add('win-animation'); 
         }
     })
     .catch(error => {
@@ -42,7 +41,7 @@ function clearHistory() {
         const chatOutput = document.getElementById('chat-output');
         chatOutput.innerHTML = '';
         const chosenOptionDiv = document.getElementById('chosen-option');
-        chosenOptionDiv.classList.add('hidden'); // Hide chosen option on clear
+        chosenOptionDiv.classList.add('hidden'); //
     })
     .catch(error => {
         console.error('Error clearing history:', error);
