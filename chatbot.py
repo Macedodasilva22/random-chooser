@@ -1,6 +1,6 @@
 import random
 
-class Pedro:  
+class Pedro:
     def __init__(self):
         self.state = 0
         self.dilemma = ""
@@ -22,19 +22,12 @@ class Pedro:
             except ValueError:
                 return "Please enter a valid number for the options."
         elif self.state == 2:
-            self.options = user_message.split(',')
+            self.options = [option.strip() for option in user_message.split(',')]
             if len(self.options) != self.num_options:
                 return f"Please provide exactly {self.num_options} options separated by commas."
             self.state += 1
             return "Thank you! Let me choose one for you..."
         elif self.state == 3:
             chosen_option = random.choice(self.options)
-            self.state = 0  
-            return f"My choice for '{self.dilemma}' is: {chosen_option.strip()}"
-
-
-if __name__ == "__main__":
-    pedro = Pedro()  
-    user_input = "I don't know what to wear"
-    response = pedro.process_input(user_input)
-    print(response)
+            self.state = 0
+            return f"My choice for '{self.dilemma}' is: {chosen_option}"

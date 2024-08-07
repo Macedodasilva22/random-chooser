@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Decision Helper</title>
+    <title>Chat with Pedro</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
-    <h1>Welcome to Decision Helper</h1>
+    <h1>Chat with Pedro</h1>
     <div id="chat-container">
         <div id="chat-output">
             {% for message in chat_history %}
@@ -16,15 +16,13 @@
             {% endfor %}
         </div>
         <div id="user-input">
-            <input type="text" id="user-message" placeholder="Enter your dilemma">
+            <input type="text" id="user-message" placeholder="Enter your message">
             <button onclick="sendMessage()">Send</button>
             <button onclick="clearHistory()">Clear History</button>
         </div>
         <div id="chosen-option" class="hidden"></div>
     </div>
     <div id="auth-links">
-        <a href="{{ url_for('register') }}">Register</a> |
-        <a href="{{ url_for('login') }}">Login</a> |
         <a href="{{ url_for('logout') }}">Logout</a>
     </div>
     <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
