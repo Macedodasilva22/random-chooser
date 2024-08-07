@@ -1,36 +1,131 @@
+/* General Styles */
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
 }
 
 h1 {
+    font-size: 2em;
     color: #333;
+    margin-bottom: 20px;
 }
 
+h2 {
+    font-size: 1.5em;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+/* Container Styling */
+.container {
+    width: 80%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Styles */
 form {
     margin-bottom: 20px;
 }
 
-input[type="text"], input[type="password"], textarea {
-    margin-bottom: 10px;
+input[type="text"], input[type="password"], textarea, select {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 16px;
 }
 
+/* Button Styles */
 button {
     background-color: #007BFF;
     color: white;
     border: none;
     padding: 10px 20px;
     cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
 }
 
 button:hover {
     background-color: #0056b3;
 }
 
+button:focus {
+    outline: none;
+}
+
+/* Link Styles */
 a {
     color: #007BFF;
+    text-decoration: none;
+    transition: color 0.3s ease;
 }
 
 a:hover {
+    color: #0056b3;
     text-decoration: underline;
+}
+
+/* Notification Styles */
+.notification {
+    background: #333;
+    color: #fff;
+    padding: 15px;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    border-radius: 5px;
+    display: none; /* Initially hidden */
+    z-index: 1000;
+}
+
+/* Spinner Styles */
+.spinner {
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #007BFF;
+    width: 100px;
+    height: 100px;
+    animation: spin 2s linear infinite;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@-webkit-keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+    }
+    
+    textarea, input[type="text"], input[type="password"], select {
+        font-size: 14px;
+    }
+
+    button {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
 }

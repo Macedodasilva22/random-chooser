@@ -5,7 +5,6 @@ from database import create_user, check_user, get_user_choices, save_choice
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
-# Initialize a global Pedro instance
 pedro = Pedro()
 
 @app.route('/')
@@ -46,10 +45,9 @@ def logout():
 @app.route('/chat', methods=['POST'])
 def chat():
     user_message = request.json.get('message')
-    print(f"Received message: {user_message}")  # Debugging line
-    response = pedro.process_input(user_message)
-    print(f"Response: {response}")  # Debugging line
-    return jsonify(response=response)
+    response_data = pedro.process_input(user_message)
+    return jsonify(response=response_data['response'], next_state=response_data.get('next_state', 0))
+
 
 @app.route('/view_past_choices')
 def view_past_choices():
@@ -68,7 +66,8 @@ def rerun_dilemma():
     
     if request.method == 'POST':
         selected_dilemma = request.form['dilemma']
-        return pedro.process_input(selected_dilemma)
+        response = pedro.process_input(selected_dilemma)
+        return jsonify({'response': response})
 
     past_choices = get_user_choices(username)
     return render_template('rerun_dilemma.html', past_dilemmas=[d[0] for d in past_choices])
@@ -82,6 +81,16 @@ def get_suggestions():
     past_choices = get_user_choices(username)
     suggestions = pedro.get_past_choices()
     return render_template('suggestions.html', suggestions=suggestions)
+
+@app.route('/analytics')
+def analytics():
+    data = pedro.get_analytics_data()
+    return render_template('analytics.html', data=data)
+
+@app.route('/statistics')
+def statistics():
+    stats = pedro.get_dilemma_statistics()
+    return render_template('statistics.html', stats=stats)
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -3,17 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Suggestions</title>
+    <title>Analytics</title>
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
-    <div class="suggestions-container">
-        <h1>Suggestions Based on Past Choices</h1>
-        <ul>
-            {% for suggestion in suggestions %}
-                <li>{{ suggestion }}</li>
-            {% endfor %}
-        </ul>
+    <div class="analytics-container">
+        <h1>Analytics</h1>
+        <pre>{{ data }}</pre> <!-- Customize how you display your analytics data -->
         <a href="/templates/index.html">Back to Home</a>
     </div>
 </body>

@@ -1,5 +1,5 @@
-import random
 import sqlite3
+import random
 
 class Pedro:
     def __init__(self):
@@ -8,6 +8,7 @@ class Pedro:
         self.num_options = 0
         self.options = []
         self.username = None
+        self.db_path = 'test_database.db'
 
     def set_username(self, username):
         self.username = username
@@ -41,7 +42,7 @@ class Pedro:
 
     def save_choice(self, dilemma, choice):
         try:
-            conn = sqlite3.connect('database.db')
+            conn = sqlite3.connect(self.db_path)
             cursor = conn.cursor()
             cursor.execute("INSERT INTO choices (username, dilemma, choice) VALUES (?, ?, ?)", (self.username, dilemma, choice))
             conn.commit()
@@ -54,7 +55,7 @@ class Pedro:
         if not self.username:
             return []
         try:
-            conn = sqlite3.connect('database.db')
+            conn = sqlite3.connect(self.db_path)
             cursor = conn.cursor()
             cursor.execute("SELECT dilemma, choice FROM choices WHERE username = ?", (self.username,))
             choices = cursor.fetchall()
@@ -65,26 +66,101 @@ class Pedro:
         finally:
             conn.close()
 
-def test_pedro():
+    def get_dilemma_count(self):
+        try:
+            conn = sqlite3.connect(self.db_path)
+            cursor = conn.cursor()
+            cursor.execute("SELECT COUNT(DISTINCT dilemma) FROM choices")
+            count = cursor.fetchone()[0]
+            return count
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            return 0
+        finally:
+            conn.close()
+
+    def get_choice_count(self):
+        try:
+            conn = sqlite3.connect(self.db_path)
+            cursor = conn.cursor()
+            cursor.execute("SELECT COUNT(*) FROM choices")
+            count = cursor.fetchone()[0]
+            return count
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            return 0
+        finally:
+            conn.close()
+
+    def get_dilemma_statistics(self):
+        try:
+            conn = sqlite3.connect(self.db_path)
+            cursor = conn.cursor()
+            cursor.execute("""
+                SELECT dilemma, choice, COUNT(*)
+                FROM choices
+                GROUP BY dilemma, choice
+                ORDER BY COUNT(*) DESC
+            """)
+            stats = cursor.fetchall()
+            return stats
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            return []
+        finally:
+            conn.close()
+
+    def get_analytics_data(self):
+        return {
+            'dilemmas': self.get_dilemma_count(),
+            'choices': self.get_choice_count()
+        }
+
+
+def setup_database():
+    conn = sqlite3.connect('test_database.db')
+    cursor = conn.cursor()
+    cursor.execute('''CREATE TABLE IF NOT EXISTS choices (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        username TEXT,
+                        dilemma TEXT,
+                        choice TEXT)''')
+    conn.commit()
+    conn.close()
+
+def insert_test_data():
+    conn = sqlite3.connect('test_database.db')
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO choices (username, dilemma, choice) VALUES (?, ?, ?)",
+                   ('test_user', 'What to eat?', 'Pizza'))
+    cursor.execute("INSERT INTO choices (username, dilemma, choice) VALUES (?, ?, ?)",
+                   ('test_user', 'What to eat?', 'Burger'))
+    conn.commit()
+    conn.close()
+
+def test_get_past_choices():
+    setup_database()
+    insert_test_data()
+    
     pedro = Pedro()
-    pedro.set_username("test_user")
+    pedro.db_path = 'test_database.db'
+    pedro.set_username('test_user')
+    
+    choices = pedro.get_past_choices()
+    
+    assert len(choices) == 2
+    assert ('What to eat?', 'Pizza') in choices
+    assert ('What to eat?', 'Burger') in choices
 
-    while True:
-        if pedro.state == 0:
-            user_input = input("Enter your dilemma: ")
-        elif pedro.state == 1:
-            user_input = input("Enter the number of options: ")
-        elif pedro.state == 2:
-            user_input = input("Enter the options separated by commas: ")
-        else:
-            print(pedro.process_input(""))
-            continue
+    print("Test passed.")
 
-        response = pedro.process_input(user_input)
-        print(response)
-        if pedro.state == 0:
-            print("Past choices:", pedro.get_past_choices())
-            break
+def cleanup_database():
+    conn = sqlite3.connect('test_database.db')
+    cursor = conn.cursor()
+    cursor.execute("DROP TABLE IF EXISTS choices")
+    conn.commit()
+    conn.close()
 
-if __name__ == "__main__":
-    test_pedro()
+if __name__ == '__main__':
+    test_get_past_choices()
+    cleanup_database()

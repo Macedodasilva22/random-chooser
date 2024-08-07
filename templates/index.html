@@ -7,29 +7,42 @@
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
-    <h1>Welcome, {{ username }}!</h1>
+    <div class="container">
+        <h1>Welcome, {{ username }}!</h1>
 
-    <form action="{{ url_for('logout') }}" method="post">
-        <button type="submit">Logout</button>
-    </form>
+        <form action="{{ url_for('logout') }}" method="post">
+            <button type="submit">Logout</button>
+        </form>
 
-    <h2>Choose an Option:</h2>
-    <form action="{{ url_for('view_past_choices') }}" method="get">
-        <button type="submit">View Past Choices</button>
-    </form>
-    <form action="{{ url_for('rerun_dilemma') }}" method="get">
-        <button type="submit">Rerun Past Choices</button>
-    </form>
-    <form action="{{ url_for('get_suggestions') }}" method="get">
-        <button type="submit">Get Suggestions Based on Past Choices</button>
-    </form>
+        <h2>Choose an Option:</h2>
+        <form action="{{ url_for('view_past_choices') }}" method="get">
+            <button type="submit">View Past Choices</button>
+        </form>
+        <form action="{{ url_for('rerun_dilemma') }}" method="get">
+            <button type="submit">Rerun Past Choices</button>
+        </form>
+        <form action="{{ url_for('get_suggestions') }}" method="get">
+            <button type="submit">Get Suggestions Based on Past Choices</button>
+        </form>
+        <form action="{{ url_for('analytics') }}" method="get">
+            <button type="submit">View Analytics</button>
+        </form>
+        <form action="{{ url_for('statistics') }}" method="get">
+            <button type="submit">View Statistics</button>
+        </form>
 
-    <h2>Chat with Popy:</h2>
-    <form id="chat-form">
-        <textarea id="chat-input" rows="4" cols="50" placeholder="Type your dilemma here..."></textarea>
-        <button type="submit" id="send-message">Send</button>
-    </form>
-    <div id="chat-response"></div>
+        <h2>Chat with Popy:</h2>
+        <form id="chat-form">
+            <textarea id="chat-input" rows="4" placeholder="Type your dilemma here..." aria-label="Type your dilemma here..."></textarea>
+            <button type="submit" id="send-message" aria-label="Send your message">Send</button>
+        </form>
+        <div id="options-input" style="display: none;">
+            <textarea id="options-textarea" rows="5" placeholder="Type your options here, one per line..."></textarea>
+            <button id="submit-options" aria-label="Submit options">Submit Options</button>
+        </div>
+        <div id="chat-response"></div>
+        <div id="loading-spinner" class="spinner" style="display:none;"></div>
+    </div>
 
     <script src="/static/js/scripts.js"></script>
 </body>
