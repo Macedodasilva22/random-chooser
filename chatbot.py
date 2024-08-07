@@ -1,4 +1,5 @@
 import random
+import sqlite3
 
 class Pedro:
     def __init__(self):
@@ -6,6 +7,10 @@ class Pedro:
         self.dilemma = ""
         self.num_options = 0
         self.options = []
+        self.username = None  # Track the current user
+
+    def set_username(self, username):
+        self.username = username
 
     def process_input(self, user_message):
         if self.state == 0:
@@ -22,7 +27,7 @@ class Pedro:
             except ValueError:
                 return "Please enter a valid number for the options."
         elif self.state == 2:
-            self.options = [option.strip() for option in user_message.split(',')]
+            self.options = user_message.split(',')
             if len(self.options) != self.num_options:
                 return f"Please provide exactly {self.num_options} options separated by commas."
             self.state += 1
@@ -30,4 +35,32 @@ class Pedro:
         elif self.state == 3:
             chosen_option = random.choice(self.options)
             self.state = 0
-            return f"My choice for '{self.dilemma}' is: {chosen_option}"
+            if self.username:
+                self.save_choice(self.dilemma, chosen_option.strip())
+            return f"My choice for '{self.dilemma}' is: {chosen_option.strip()}"
+
+    def save_choice(self, dilemma, choice):
+        try:
+            conn = sqlite3.connect('database.db')
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO choices (username, dilemma, choice) VALUES (?, ?, ?)", (self.username, dilemma, choice))
+            conn.commit()
+        except Exception as e:
+            print(f"An error occurred while saving the choice: {e}")
+        finally:
+            conn.close()
+
+    def get_past_choices(self):
+        if not self.username:
+            return []
+        try:
+            conn = sqlite3.connect('database.db')
+            cursor = conn.cursor()
+            cursor.execute("SELECT dilemma, choice FROM choices WHERE username = ?", (self.username,))
+            choices = cursor.fetchall()
+            return choices
+        except Exception as e:
+            print(f"An error occurred while retrieving choices: {e}")
+            return []
+        finally:
+            conn.close()

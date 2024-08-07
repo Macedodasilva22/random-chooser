@@ -1,4 +1,4 @@
-from database import create_tables
+from database import init_db
 
 if __name__ == '__main__':
-    create_tables()
+    init_db()

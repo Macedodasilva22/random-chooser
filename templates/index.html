@@ -19,14 +19,16 @@
             <input type="text" id="user-message" placeholder="Enter your dilemma">
             <button onclick="sendMessage()">Send</button>
             <button onclick="clearHistory()">Clear History</button>
+            <a href="{{ url_for('logout') }}">Logout</a>
         </div>
         <div id="chosen-option" class="hidden"></div>
     </div>
-    <div id="auth-links">
-        <a href="{{ url_for('register') }}">Register</a> |
-        <a href="{{ url_for('login') }}">Login</a> |
-        <a href="{{ url_for('logout') }}">Logout</a>
-    </div>
+    <h2>Past Choices</h2>
+    <ul>
+        {% for dilemma, choice in past_choices %}
+            <li><strong>Dilemma:</strong> {{ dilemma }} - <strong>Choice:</strong> {{ choice }}</li>
+        {% endfor %}
+    </ul>
     <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
 </body>
 </html>
