@@ -1,24 +1,19 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session
-import sqlite3
 from chatbot import Pedro
+from database import create_user, check_user, get_user_choices, save_choice
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'  # Replace with a strong secret key
-pedro = Pedro()
+app.secret_key = 'your_secret_key'
 
-# Initialize chat history in the session
-def init_chat_history():
-    if 'chat_history' not in session:
-        session['chat_history'] = []
+# Initialize a global Pedro instance
+pedro = Pedro()
 
 @app.route('/')
 def index():
     if 'username' in session:
         username = session['username']
         pedro.set_username(username)
-        past_choices = pedro.get_past_choices()
-        chat_history = session.get('chat_history', [])
-        return render_template('index.html', chat_history=chat_history, past_choices=past_choices)
+        return render_template('index.html', username=username)
     return redirect(url_for('login'))
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -28,10 +23,8 @@ def login():
         password = request.form['password']
         if check_user(username, password):
             session['username'] = username
-            init_chat_history()
             return redirect(url_for('index'))
-        else:
-            return "Login failed. Check your username and/or password."
+        return "Login failed. Check your username and/or password."
     return render_template('login.html')
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -45,53 +38,50 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html')
 
-@app.route('/logout')
+@app.route('/logout', methods=['POST'])
 def logout():
     session.pop('username', None)
-    session.pop('chat_history', None)  # Clear chat history on logout
     return redirect(url_for('login'))
 
 @app.route('/chat', methods=['POST'])
 def chat():
     user_message = request.json.get('message')
+    print(f"Received message: {user_message}")  # Debugging line
     response = pedro.process_input(user_message)
-    chat_history = session.get('chat_history', [])
-    chat_history.append({"user_message": user_message, "chatbot_response": response})
-    session['chat_history'] = chat_history
-    return jsonify(response=response, chat_history=chat_history)
+    print(f"Response: {response}")  # Debugging line
+    return jsonify(response=response)
 
-@app.route('/clear-history', methods=['POST'])
-def clear_history():
-    session['chat_history'] = []  # Clear chat history in the session
-    return jsonify(success=True)
+@app.route('/view_past_choices')
+def view_past_choices():
+    username = session.get('username')
+    if not username:
+        return redirect(url_for('login'))
+    
+    past_choices = get_user_choices(username)
+    return render_template('past_choices.html', past_choices=past_choices)
 
-def create_user(username, password):
-    try:
-        conn = sqlite3.connect('database.db')
-        cursor = conn.cursor()
-        cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
-        conn.commit()
-    except sqlite3.IntegrityError:
-        return "Username already exists."
-    except Exception as e:
-        print(f"An error occurred: {e}")
-        return "An error occurred while creating the user."
-    finally:
-        conn.close()
-    return None
+@app.route('/rerun_dilemma', methods=['GET', 'POST'])
+def rerun_dilemma():
+    username = session.get('username')
+    if not username:
+        return redirect(url_for('login'))
+    
+    if request.method == 'POST':
+        selected_dilemma = request.form['dilemma']
+        return pedro.process_input(selected_dilemma)
 
-def check_user(username, password):
-    try:
-        conn = sqlite3.connect('database.db')
-        cursor = conn.cursor()
-        cursor.execute("SELECT * FROM users WHERE username = ? AND password = ?", (username, password))
-        user = cursor.fetchone()
-        return user is not None
-    except Exception as e:
-        print(f"An error occurred: {e}")
-        return False
-    finally:
-        conn.close()
+    past_choices = get_user_choices(username)
+    return render_template('rerun_dilemma.html', past_dilemmas=[d[0] for d in past_choices])
+
+@app.route('/get_suggestions')
+def get_suggestions():
+    username = session.get('username')
+    if not username:
+        return redirect(url_for('login'))
+    
+    past_choices = get_user_choices(username)
+    suggestions = pedro.get_past_choices()
+    return render_template('suggestions.html', suggestions=suggestions)
 
 if __name__ == '__main__':
     app.run(debug=True)

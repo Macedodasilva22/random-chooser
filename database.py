@@ -7,7 +7,6 @@ def init_db():
         conn = sqlite3.connect(DATABASE)
         cursor = conn.cursor()
         
-        # Create users table
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS users (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -16,7 +15,6 @@ def init_db():
             )
         ''')
         
-        # Create choices table
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS choices (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -83,4 +81,3 @@ def get_user_choices(username):
         return []
     finally:
         conn.close()
-print("database.py is loaded")

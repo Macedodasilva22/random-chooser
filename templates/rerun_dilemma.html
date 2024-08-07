@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rerun Dilemma</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Rerun Past Dilemmas</h1>
+    <form action="{{ url_for('rerun_dilemma') }}" method="post">
+        <label for="dilemma">Select Dilemma:</label>
+        <select id="dilemma" name="dilemma">
+            {% for dilemma in past_dilemmas %}
+            <option value="{{ dilemma }}">{{ dilemma }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Rerun</button>
+    </form>
+    <a href="{{ url_for('index') }}">Back to Home</a>
+</body>
+</html>
