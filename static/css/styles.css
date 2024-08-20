@@ -1,4 +1,4 @@
-/* General Styles */
+
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
@@ -19,7 +19,7 @@ h2 {
     margin-bottom: 15px;
 }
 
-/* Container Styling */
+
 .container {
     width: 80%;
     max-width: 1200px;
@@ -30,7 +30,7 @@ h2 {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Form Styles */
+
 form {
     margin-bottom: 20px;
 }
@@ -45,7 +45,7 @@ input[type="text"], input[type="password"], textarea, select {
     font-size: 16px;
 }
 
-/* Button Styles */
+
 button {
     background-color: #007BFF;
     color: white;
@@ -65,7 +65,7 @@ button:focus {
     outline: none;
 }
 
-/* Link Styles */
+
 a {
     color: #007BFF;
     text-decoration: none;
@@ -77,7 +77,7 @@ a:hover {
     text-decoration: underline;
 }
 
-/* Notification Styles */
+
 .notification {
     background: #333;
     color: #fff;
@@ -86,11 +86,11 @@ a:hover {
     top: 20px;
     right: 20px;
     border-radius: 5px;
-    display: none; /* Initially hidden */
+    display: none; 
     z-index: 1000;
 }
 
-/* Spinner Styles */
+
 .spinner {
     border: 16px solid #f3f3f3;
     border-radius: 50%;
