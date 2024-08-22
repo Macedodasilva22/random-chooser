@@ -48,7 +48,6 @@ def chat():
     response_data = pedro.process_input(user_message)
     return jsonify(response=response_data['response'], next_state=response_data.get('next_state', 0))
 
-
 @app.route('/view_past_choices')
 def view_past_choices():
     username = session.get('username')

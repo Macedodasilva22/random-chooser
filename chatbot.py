@@ -5,7 +5,6 @@ class Pedro:
     def __init__(self):
         self.state = 0
         self.dilemma = ""
-        self.num_options = 0
         self.options = []
         self.username = None
         self.db_path = 'database.db'
@@ -20,33 +19,23 @@ class Pedro:
             self.dilemma = user_message
             self.state += 1
             return {
-                "response": "Got it! Now, between how many options are you debating?",
+                "response": "Got it! Now, please enter your options, one per line. Press enter after each option.",
                 "next_state": 1
             }
 
         elif self.state == 1:
-            try:
-                self.num_options = int(user_message)
-                if self.num_options <= 1:
-                    return {"response": "Please enter a number greater than 1.", "next_state": self.state}
-                self.state += 1
-                return {
-                    "response": f"Great! Please enter the {self.num_options} options, one per line.",
-                    "next_state": 2
-                }
-            except ValueError:
-                return {"response": "Please enter a valid number for the options.", "next_state": self.state}
-
-        elif self.state == 2:
             if not user_message:
                 return {"response": "Please provide the options.", "next_state": self.state}
-            self.options = [opt.strip() for opt in user_message.split('\n')]
-            if len(self.options) != self.num_options:
-                return {"response": f"Please provide exactly {self.num_options} options.", "next_state": self.state}
+            
+            # Accept options separated by newlines
+            self.options = [opt.strip() for opt in user_message.splitlines()]
+            if len(self.options) < 2:
+                return {"response": "Please provide at least two options.", "next_state": self.state}
+            
             self.state += 1
-            return {"response": "Thank you! Let me choose one for you...", "next_state": 3}
+            return {"response": "Thank you! Let me choose one for you...", "next_state": 2}
 
-        elif self.state == 3:
+        elif self.state == 2:
             if not self.options:
                 return {"response": "Error: No options available to choose from.", "next_state": self.state}
             chosen_option = random.choice(self.options)
